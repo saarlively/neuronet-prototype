@@ -1,327 +1,700 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Neuronet Prototype</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Tailwind via CDN -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM (UMD) -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <!-- Babel so the browser can understand JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body class="bg-slate-950">
     <div id="root"></div>
 
-    <!-- React + ReactDOM + Babel -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
     <script type="text/babel">
+      const { useState } = React;
+
+      // Neuronet: multi-screen prototype (Feed, Learn, Events, Profile)
       function NeuronetPrototype() {
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-slate-950 py-6">
-      {/* iOS-style phone frame */}
-      <div className="w-[390px] h-[800px] rounded-[40px] border border-slate-800 bg-slate-950 shadow-[0_20px_60px_rgba(0,0,0,0.7)] overflow-hidden relative">
-        {/* Gradient aura background */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 -left-20 w-72 h-72 rounded-full bg-[radial-gradient(circle_at_center,#38bdf8,transparent)] opacity-40" />
-          <div className="absolute -bottom-32 -right-10 w-80 h-80 rounded-full bg-[radial-gradient(circle_at_center,#a855f7,transparent)] opacity-40" />
-        </div>
+        const [activeTab, setActiveTab] = useState("feed"); // 'feed' | 'learn' | 'events' | 'profile'
 
-        {/* Content layer */}
-        <div className="relative z-10 flex flex-col h-full text-slate-50">
-          {/* iOS status bar */}
-          <div className="h-10 flex items-center justify-between px-5 pt-2 text-[11px] text-slate-200/80">
-            <span className="font-medium">9:41</span>
-            <div className="flex items-center space-x-1 opacity-80">
-              <span>󰍶</span>
-              <span>󰤨</span>
-              <span>󰖙</span>
-            </div>
-          </div>
+        const isActive = (tab) => activeTab === tab;
 
-          {/* Top nav / brand */}
-          <div className="px-5 pb-3 flex items-center justify-between">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">For you</p>
-              <h1 className="text-2xl font-semibold tracking-tight">Neuronet</h1>
-            </div>
-            <button className="w-9 h-9 rounded-full bg-slate-900/80 border border-slate-700/70 flex items-center justify-center text-xs">
-              SA
-            </button>
-          </div>
-
-          {/* Segmented control (Home / Explore / Events) */}
-          <div className="px-5 pb-3">
-            <div className="bg-slate-900/70 border border-slate-700/70 rounded-full p-1 flex text-[11px]">
-              <button className="flex-1 py-1.5 rounded-full bg-slate-800/90 text-slate-50 font-medium shadow-[0_0_0_1px_rgba(148,163,184,0.6)]">
-                Feed
-              </button>
-              <button className="flex-1 py-1.5 rounded-full text-slate-400 font-medium">
-                Profile
-              </button>
-              <button className="flex-1 py-1.5 rounded-full text-slate-400 font-medium">
-                Events
-              </button>
-            </div>
-          </div>
-
-          {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-5">
-            {/* Composer */}
-            <div className="bg-slate-900/80 border border-slate-700/70 rounded-2xl p-3.5 space-y-3 backdrop-blur-sm">
-              <div className="flex space-x-3">
-                <div className="w-8 h-8 rounded-full bg-slate-700/80" />
-                <input
-                  type="text"
-                  placeholder="What are you reading or exploring today?"
-                  className="flex-1 bg-transparent text-[13px] placeholder:text-slate-500 focus:outline-none"
-                />
+        return (
+          <div className="min-h-screen w-full flex items-center justify-center bg-slate-950 py-6">
+            {/* iOS-style phone frame */}
+            <div className="w-[390px] h-[800px] rounded-[40px] border border-slate-800 bg-slate-950 shadow-[0_20px_60px_rgba(0,0,0,0.7)] overflow-hidden relative">
+              {/* Gradient aura background */}
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute -top-32 -left-20 w-72 h-72 rounded-full bg-[radial-gradient(circle_at_center,#38bdf8,transparent)] opacity-40" />
+                <div className="absolute -bottom-32 -right-10 w-80 h-80 rounded-full bg-[radial-gradient(circle_at_center,#a855f7,transparent)] opacity-40" />
               </div>
-              <div className="flex items-center justify-between text-[11px]">
-                <div className="flex items-center space-x-3 text-slate-400">
-                  <button className="flex items-center space-x-1">
-                    <span>󰈙</span>
-                    <span>Paper</span>
-                  </button>
-                  <button className="flex items-center space-x-1">
-                    <span>󰖟</span>
-                    <span>Link</span>
-                  </button>
-                  <button className="flex items-center space-x-1">
-                    <span>󰍡</span>
-                    <span>Question</span>
+
+              {/* Content layer */}
+              <div className="relative z-10 flex flex-col h-full text-slate-50">
+                {/* iOS status bar */}
+                <div className="h-10 flex items-center justify-between px-5 pt-2 text-[11px] text-slate-200/80">
+                  <span className="font-medium">9:41</span>
+                  <div className="flex items-center space-x-1 opacity-80">
+                    <span>󰍶</span>
+                    <span>󰤨</span>
+                    <span>󰖙</span>
+                  </div>
+                </div>
+
+                {/* Top nav / brand */}
+                <div className="px-5 pb-3 flex items-center justify-between">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
+                      {activeTab === "feed"
+                        ? "For you"
+                        : activeTab === "learn"
+                        ? "Learning"
+                        : activeTab === "events"
+                        ? "Events & conferences"
+                        : "Profile"}
+                    </p>
+                    <h1 className="text-2xl font-semibold tracking-tight">
+                      Neuronet
+                    </h1>
+                  </div>
+                  <button className="w-9 h-9 rounded-full bg-slate-900/80 border border-slate-700/70 flex items-center justify-center text-xs">
+                    SA
                   </button>
                 </div>
-                <button className="px-3 py-1.5 rounded-full bg-cyan-400 text-slate-950 text-[11px] font-semibold shadow-[0_10px_30px_rgba(34,211,238,0.35)]">
-                  Post
-                </button>
-              </div>
-            </div>
 
-            {/* Topic chips */}
-            <div className="flex flex-wrap gap-1.5 text-[10px]">
-              {['#EEG','#BCI','#NeuroAI','#fMRI','#Neuroethics','#Clinical','#OpenData'].map((tag) => (
-                <button
-                  key={tag}
-                  className="px-2.5 py-1 rounded-full bg-slate-900/70 border border-slate-700/80 text-slate-300"
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
+                {/* Small segmented control – only on Feed for now */}
+                {activeTab === "feed" && (
+                  <div className="px-5 pb-3">
+                    <div className="bg-slate-900/70 border border-slate-700/70 rounded-full p-1 flex text-[11px]">
+                      <button className="flex-1 py-1.5 rounded-full bg-slate-800/90 text-slate-50 font-medium shadow-[0_0_0_1px_rgba(148,163,184,0.6)]">
+                        For you
+                      </button>
+                      <button className="flex-1 py-1.5 rounded-full text-slate-400 font-medium">
+                        Following
+                      </button>
+                      <button className="flex-1 py-1.5 rounded-full text-slate-400 font-medium">
+                        Jobs
+                      </button>
+                    </div>
+                  </div>
+                )}
 
-            {/* Post Card (Feed) */}
-            <div className="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-3 backdrop-blur-sm shadow-[0_18px_40px_rgba(15,23,42,0.9)]">
-              <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center text-[11px] font-semibold text-slate-950">
-                  ML
+                {/* MAIN SCROLL AREA */}
+                <div className="flex-1 overflow-y-auto px-5 pb-4">
+                  {/* FEED TAB */}
+                  {activeTab === "feed" && (
+                    <div className="space-y-5">
+                      {/* Composer */}
+                      <div className="bg-slate-900/80 border border-slate-700/70 rounded-2xl p-3.5 space-y-3 backdrop-blur-sm">
+                        <div className="flex space-x-3">
+                          <div className="w-8 h-8 rounded-full bg-slate-700/80" />
+                          <input
+                            type="text"
+                            placeholder="What are you reading or exploring today?"
+                            className="flex-1 bg-transparent text-[13px] placeholder:text-slate-500 focus:outline-none"
+                          />
+                        </div>
+                        <div className="flex items-center justify-between text-[11px]">
+                          <div className="flex items-center space-x-3 text-slate-400">
+                            <button className="flex items-center space-x-1">
+                              <span>󰈙</span>
+                              <span>Paper</span>
+                            </button>
+                            <button className="flex items-center space-x-1">
+                              <span>󰖟</span>
+                              <span>Link</span>
+                            </button>
+                            <button className="flex items-center space-x-1">
+                              <span>󰍡</span>
+                              <span>Question</span>
+                            </button>
+                          </div>
+                          <button className="px-3 py-1.5 rounded-full bg-cyan-400 text-slate-950 text-[11px] font-semibold shadow-[0_10px_30px_rgba(34,211,238,0.35)]">
+                            Post
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Topic chips */}
+                      <div className="flex flex-wrap gap-1.5 text-[10px]">
+                        {[
+                          "#EEG",
+                          "#BCI",
+                          "#NeuroAI",
+                          "#fMRI",
+                          "#Neuroethics",
+                          "#Clinical",
+                          "#OpenData",
+                        ].map((tag) => (
+                          <button
+                            key={tag}
+                            className="px-2.5 py-1 rounded-full bg-slate-900/70 border border-slate-700/80 text-slate-300"
+                          >
+                            {tag}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Post Card (Feed) */}
+                      <div className="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-3 backdrop-blur-sm shadow-[0_18px_40px_rgba(15,23,42,0.9)]">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center text-[11px] font-semibold text-slate-950">
+                            ML
+                          </div>
+                          <div>
+                            <p className="text-[13px] font-semibold leading-tight">
+                              Dr. Maya Levin
+                            </p>
+                            <p className="text-[11px] text-slate-400">
+                              MIT • BCI Researcher
+                            </p>
+                          </div>
+                        </div>
+
+                        <p className="text-[13px] leading-relaxed text-slate-100">
+                          Just read a fascinating paper on motor decoding latency
+                          improvements using compact CNNs for intracortical BCI.
+                        </p>
+
+                        {/* Paper card */}
+                        <div className="border border-slate-700/80 rounded-xl p-3 bg-slate-900/80 flex flex-col gap-1.5">
+                          <p className="text-[13px] font-semibold text-slate-50">
+                            Improving Low-Latency Motor Decoding Using Lightweight CNNs
+                          </p>
+                          <p className="text-[11px] text-slate-400">
+                            Chen et al., 2024 • NeurIPS
+                          </p>
+                          <p className="text-[11px] text-cyan-300">
+                            arxiv.org/abs/2401.12345
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                          <div className="flex space-x-4">
+                            <button className="flex items-center space-x-1">
+                              <span>󰋸</span>
+                              <span>24</span>
+                            </button>
+                            <button className="flex items-center space-x-1">
+                              <span>󰍡</span>
+                              <span>9</span>
+                            </button>
+                            <button className="flex items-center space-x-1">
+                              <span>󰓎</span>
+                              <span>Repost</span>
+                            </button>
+                          </div>
+                          <button className="flex items-center space-x-1">
+                            <span>󰆏</span>
+                            <span>Save</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Discussion thread card */}
+                      <div className="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5 backdrop-blur-sm">
+                        <div className="flex items-center justify-between">
+                          <p className="text-[11px] font-semibold text-violet-300 uppercase tracking-wide">
+                            Open discussion
+                          </p>
+                          <span className="text-[10px] text-slate-400">
+                            BCI • Methods
+                          </span>
+                        </div>
+                        <p className="text-[13px] font-semibold text-slate-50">
+                          How are people handling motion artefacts in dry EEG caps for
+                          at-home BCI experiments?
+                        </p>
+                        <div className="flex flex-wrap gap-1.5 text-[10px]">
+                          {["#EEG", "#BCI", "#SignalProcessing", "#HomeBCI"].map(
+                            (t) => (
+                              <span
+                                key={t}
+                                className="px-2 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300"
+                              >
+                                {t}
+                              </span>
+                            )
+                          )}
+                        </div>
+                        <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                          <span>18 replies • 4 experts weighed in</span>
+                          <button className="text-cyan-300">View thread</button>
+                        </div>
+                      </div>
+
+                      {/* Mini Profile preview */}
+                      <div className="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-3 backdrop-blur-sm">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 rounded-full bg-slate-700/90" />
+                          <div className="flex-1">
+                            <h2 className="text-[14px] font-semibold">Alex Morgan</h2>
+                            <p className="text-[11px] text-slate-400">
+                              NeuroAI • Computational Neuroscience
+                            </p>
+                          </div>
+                          <button className="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-slate-200 border border-slate-700">
+                            View
+                          </button>
+                        </div>
+
+                        <div className="flex flex-wrap gap-1.5 mt-1">
+                          {["EEG", "BCI", "Neural Decoding", "AI+Neuro"].map((t) => (
+                            <span
+                              key={t}
+                              className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-700 text-[10px] text-slate-300"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="space-y-2 mt-2">
+                          <div className="border border-slate-800 rounded-xl p-2.5 bg-slate-900/80 text-[11px] text-slate-200">
+                            Exploring Representational Drift in Sensorimotor Cortices •
+                            2023
+                          </div>
+                          <div className="border border-slate-800 rounded-xl p-2.5 bg-slate-900/80 text-[11px] text-slate-200">
+                            Open-source EEG preprocessing library for rapid prototyping.
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Learning path card */}
+                      <div className="bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 space-y-2.5 backdrop-blur-md">
+                        <p className="text-[11px] font-semibold text-emerald-300 uppercase tracking-wide">
+                          Learning path
+                        </p>
+                        <p className="text-[14px] font-semibold text-slate-50">
+                          BCI 101 • From EEG to prototypes
+                        </p>
+                        <p className="text-[11px] text-slate-300">
+                          8 curated steps: key papers, talks, and starter projects to go
+                          from zero to building your first BCI demo.
+                        </p>
+                        <div className="flex flex-wrap gap-1.5 text-[10px]">
+                          <span className="px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300">
+                            Step 1 · Foundations
+                          </span>
+                          <span className="px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300">
+                            Step 2 · Key papers
+                          </span>
+                          <span className="px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300">
+                            Step 3 · Hands-on
+                          </span>
+                        </div>
+                        <button className="mt-1 px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold w-fit">
+                          Start learning
+                        </button>
+                      </div>
+
+                      {/* Events preview card */}
+                      <div className="bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 space-y-2.5 backdrop-blur-md">
+                        <div className="flex items-center justify-between">
+                          <p className="text-[12px] font-semibold text-cyan-300 tracking-wide uppercase">
+                            Nearby Event
+                          </p>
+                          <span className="text-[10px] text-slate-400">
+                            Brooklyn, NY
+                          </span>
+                        </div>
+                        <p className="text-[14px] font-semibold text-slate-50">
+                          NYC Neurotech Meetup
+                        </p>
+                        <p className="text-[11px] text-slate-300">
+                          Jan 28, 2026 • Milk & Roses
+                        </p>
+                        <p className="text-[11px] text-slate-300">
+                          A gathering of researchers, founders, and engineers discussing
+                          next-gen BCIs and neurointerfaces.
+                        </p>
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex -space-x-2">
+                            <div className="w-6 h-6 rounded-full bg-cyan-400/80 border border-slate-950" />
+                            <div className="w-6 h-6 rounded-full bg-violet-500/80 border border-slate-950" />
+                            <div className="w-6 h-6 rounded-full bg-emerald-400/80 border border-slate-950" />
+                          </div>
+                          <button className="px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold">
+                            RSVP
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Job recommendation card */}
+                      <div className="bg-slate-900/85 border border-slate-700/80 rounded-2xl p-3.5 space-y-2.5 backdrop-blur-md">
+                        <div className="flex items-center justify-between">
+                          <p className="text-[11px] font-semibold text-amber-300 uppercase tracking-wide">
+                            Role for you
+                          </p>
+                          <span className="text-[10px] text-slate-400">
+                            Based on your profile
+                          </span>
+                        </div>
+                        <p className="text-[14px] font-semibold text-slate-50">
+                          Neurotech Research Engineer
+                        </p>
+                        <p className="text-[11px] text-slate-300">
+                          OpenBCI • Brooklyn, NY • Hybrid
+                        </p>
+                        <p className="text-[11px] text-slate-300">
+                          Work on next-gen EEG/BCI pipelines, real-time signal
+                          processing, and closed-loop experiments.
+                        </p>
+                        <div className="flex flex-wrap gap-1.5 text-[10px] mt-1">
+                          {[
+                            "EEG",
+                            "BCI",
+                            "Python",
+                            "Real-time",
+                            "Signal Processing",
+                          ].map((t) => (
+                            <span
+                              key={t}
+                              className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between pt-2">
+                          <button className="px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold">
+                            View job
+                          </button>
+                          <button className="text-[11px] text-slate-400">
+                            See 12 more roles
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* LEARN TAB */}
+                  {activeTab === "learn" && (
+                    <div className="space-y-4">
+                      <h2 className="text-lg font-semibold mb-1">Learn</h2>
+                      <p className="text-[12px] text-slate-400 mb-2">
+                        Curated learning paths and topic hubs for neuro, BCI, and
+                        neuroAI.
+                      </p>
+
+                      <div className="space-y-3">
+                        {/* Topic chips */}
+                        <div className="flex flex-wrap gap-1.5 text-[10px]">
+                          {[
+                            "Intro to EEG",
+                            "BCI 101",
+                            "NeuroAI",
+                            "Neuroethics",
+                            "Clinical neurotech",
+                          ].map((t) => (
+                            <span
+                              key={t}
+                              className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Learning path cards */}
+                        <div className="bg-slate-900/85 border border-slate-700 rounded-2xl p-3.5 space-y-2">
+                          <p className="text-[11px] font-semibold text-emerald-300 uppercase">
+                            Path • Beginner
+                          </p>
+                          <p className="text-[14px] font-semibold text-slate-50">
+                            Intro to EEG for non-engineers
+                          </p>
+                          <p className="text-[11px] text-slate-300">
+                            6-step path: signals, artefacts, hardware basics, and how to
+                            read your first paper.
+                          </p>
+                          <p className="text-[10px] text-slate-400">
+                            · 3 papers · 2 videos · 1 hands-on demo
+                          </p>
+                          <button className="mt-1 px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold w-fit">
+                            Start path
+                          </button>
+                        </div>
+
+                        <div className="bg-slate-900/85 border border-slate-700 rounded-2xl p-3.5 space-y-2">
+                          <p className="text-[11px] font-semibold text-violet-300 uppercase">
+                            Path • Intermediate
+                          </p>
+                          <p className="text-[14px] font-semibold text-slate-50">
+                            Brain-computer interfaces 101
+                          </p>
+                          <p className="text-[11px] text-slate-300">
+                            10 posts to understand BCI pipelines, decoding, feedback,
+                            and real-time loops.
+                          </p>
+                          <p className="text-[10px] text-slate-400">
+                            · 5 papers · 3 talks · 2 project ideas
+                          </p>
+                          <button className="mt-1 px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold w-fit">
+                            View curriculum
+                          </button>
+                        </div>
+
+                        {/* Micro-course */}
+                        <div className="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-3.5 space-y-2">
+                          <p className="text-[11px] font-semibold text-cyan-300 uppercase">
+                            Micro-course
+                          </p>
+                          <p className="text-[13px] font-semibold text-slate-50">
+                            10 posts to understand LFP decoding
+                          </p>
+                          <p className="text-[11px] text-slate-300">
+                            Short, expert-authored sequence you can follow over coffee
+                            breaks.
+                          </p>
+                          <button className="mt-1 px-3 py-1.5 rounded-full bg-cyan-400 text-slate-950 text-[11px] font-semibold w-fit">
+                            Add to my queue
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* EVENTS TAB */}
+                  {activeTab === "events" && (
+                    <div className="space-y-4">
+                      <h2 className="text-lg font-semibold mb-1">
+                        Events & Conferences
+                      </h2>
+                      <p className="text-[12px] text-slate-400 mb-2">
+                        Neuro and neurotech meetups, conferences, and workshops around
+                        you and online.
+                      </p>
+
+                      {/* Filters */}
+                      <div className="flex flex-wrap gap-1.5 text-[10px] mb-1">
+                        {["Nearby", "Global", "Online", "BCI", "Clinical"].map((t) => (
+                          <button
+                            key={t}
+                            className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300"
+                          >
+                            {t}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Event cards */}
+                      <div className="space-y-3">
+                        <div className="bg-slate-900/85 border border-slate-700 rounded-2xl p-3.5 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <p className="text-[12px] font-semibold text-cyan-300 uppercase">
+                              Nearby • Meetup
+                            </p>
+                            <span className="text-[10px] text-slate-400">
+                              Brooklyn, NY
+                            </span>
+                          </div>
+                          <p className="text-[14px] font-semibold text-slate-50">
+                            NYC Neurotech Meetup
+                          </p>
+                          <p className="text-[11px] text-slate-300">
+                            Jan 28, 2026 • Milk & Roses • Talks + social
+                          </p>
+                          <p className="text-[11px] text-slate-400">
+                            Founders, researchers, and engineers building the next
+                            generation of BCIs.
+                          </p>
+                          <div className="flex items-center justify-between pt-1">
+                            <div className="flex -space-x-2">
+                              <div className="w-6 h-6 rounded-full bg-cyan-400/80 border border-slate-950" />
+                              <div className="w-6 h-6 rounded-full bg-violet-500/80 border border-slate-950" />
+                              <div className="w-6 h-6 rounded-full bg-emerald-400/80 border border-slate-950" />
+                            </div>
+                            <button className="px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold">
+                              RSVP
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-900/85 border border-slate-700 rounded-2xl p-3.5 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <p className="text-[12px] font-semibold text-emerald-300 uppercase">
+                              Conference
+                            </p>
+                            <span className="text-[10px] text-slate-400">Online</span>
+                          </div>
+                          <p className="text-[14px] font-semibold text-slate-50">
+                            Global NeuroAI Summit
+                          </p>
+                          <p className="text-[11px] text-slate-300">
+                            March 4–6, 2026 • Fully virtual
+                          </p>
+                          <p className="text-[11px] text-slate-400">
+                            Keynotes on AI for neural decoding, foundation models for
+                            brain data, and ethics.
+                          </p>
+                          <button className="mt-1 px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold w-fit">
+                            View details
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* PROFILE TAB */}
+                  {activeTab === "profile" && (
+                    <div className="space-y-4">
+                      <h2 className="text-lg font-semibold mb-1">Your profile</h2>
+                      <div className="flex items-center space-x-4">
+                        <div className="w-14 h-14 rounded-full bg-slate-700/90" />
+                        <div>
+                          <p className="text-[15px] font-semibold">Alex Morgan</p>
+                          <p className="text-[12px] text-slate-400">
+                            NeuroAI • Computational Neuroscience
+                          </p>
+                          <p className="text-[11px] text-slate-500">
+                            MIT • OpenBCI collaborator
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Tags / expertise */}
+                      <div className="flex flex-wrap gap-2 text-[11px]">
+                        {[
+                          "EEG",
+                          "BCI",
+                          "NeuroAI",
+                          "Neural decoding",
+                          "Open science",
+                        ].map((t) => (
+                          <span
+                            key={t}
+                            className="px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Credibility */}
+                      <div className="space-y-2">
+                        <h3 className="text-[13px] font-semibold">
+                          Verified credentials
+                        </h3>
+                        <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-[11px]">
+                          Verified by: MIT Brain & Cognitive Sciences (PI confirmed)
+                        </div>
+                      </div>
+
+                      {/* Publications */}
+                      <div className="space-y-2">
+                        <h3 className="text-[13px] font-semibold">Publications</h3>
+                        <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-[11px]">
+                          Representational Drift in Sensorimotor Cortex (2023)
+                        </div>
+                        <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-[11px]">
+                          Neural Embeddings for Continuous BCI Control (2022)
+                        </div>
+                      </div>
+
+                      {/* Projects */}
+                      <div className="space-y-2">
+                        <h3 className="text-[13px] font-semibold">Projects</h3>
+                        <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-[11px]">
+                          Open-source EEG preprocessing toolkit for rapid BCI
+                          prototyping.
+                        </div>
+                        <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-[11px]">
+                          Hands-free typing demo using motor imagery signals.
+                        </div>
+                      </div>
+
+                      {/* Mentoring / office hours */}
+                      <div className="space-y-2">
+                        <h3 className="text-[13px] font-semibold">
+                          Mentoring & office hours
+                        </h3>
+                        <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-[11px] space-y-1.5">
+                          <p className="text-slate-200">
+                            <span className="font-semibold">Open to Q&amp;A on:</span>{" "}
+                            EEG • BCI • Neural decoding • ML for neural signals
+                          </p>
+                          <p className="text-slate-400">
+                            20-min slots • Max 2 per week • Async questions welcome
+                          </p>
+                        </div>
+                        <button className="px-3 py-1.5 rounded-full bg-cyan-400 text-slate-950 text-[11px] font-semibold w-fit">
+                          Book office hours
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <p className="text-[13px] font-semibold leading-tight">Dr. Maya Levin</p>
-                  <p className="text-[11px] text-slate-400">MIT • BCI Researcher</p>
-                </div>
-              </div>
 
-              <p className="text-[13px] leading-relaxed text-slate-100">
-                Just read a fascinating paper on motor decoding latency improvements using compact CNNs for intracortical BCI.
-              </p>
-
-              {/* Paper card */}
-              <div className="border border-slate-700/80 rounded-xl p-3 bg-slate-900/80 flex flex-col gap-1.5">
-                <p className="text-[13px] font-semibold text-slate-50">
-                  Improving Low-Latency Motor Decoding Using Lightweight CNNs
-                </p>
-                <p className="text-[11px] text-slate-400">Chen et al., 2024 • NeurIPS</p>
-                <p className="text-[11px] text-cyan-300">arxiv.org/abs/2401.12345</p>
-              </div>
-
-              <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
-                <div className="flex space-x-4">
-                  <button className="flex items-center space-x-1">
-                    <span>󰋸</span>
-                    <span>24</span>
-                  </button>
-                  <button className="flex items-center space-x-1">
-                    <span>󰍡</span>
-                    <span>9</span>
-                  </button>
-                  <button className="flex items-center space-x-1">
-                    <span>󰓎</span>
-                    <span>Repost</span>
-                  </button>
-                </div>
-                <button className="flex items-center space-x-1">
-                  <span>󰆏</span>
-                  <span>Save</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Discussion thread card */}
-            <div className="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5 backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <p className="text-[11px] font-semibold text-violet-300 uppercase tracking-wide">Open discussion</p>
-                <span className="text-[10px] text-slate-400">BCI • Methods</span>
-              </div>
-              <p className="text-[13px] font-semibold text-slate-50">
-                How are people handling motion artefacts in dry EEG caps for at-home BCI experiments?
-              </p>
-              <div className="flex flex-wrap gap-1.5 text-[10px]">
-                {['#EEG','#BCI','#SignalProcessing','#HomeBCI'].map((t) => (
-                  <span
-                    key={t}
-                    className="px-2 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300"
+                {/* iOS-style tab bar */}
+                <div className="h-14 border-t border-slate-800 bg-slate-950/90 flex items-center justify-around text-[11px] text-slate-400">
+                  <button
+                    className={`flex flex-col items-center space-y-0.5 ${
+                      isActive("feed") ? "text-cyan-300" : ""
+                    }`}
+                    onClick={() => setActiveTab("feed")}
                   >
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
-                <span>18 replies • 4 experts weighed in</span>
-                <button className="text-cyan-300">View thread</button>
-              </div>
-            </div>
-
-            {/* Mini Profile preview */}
-            <div className="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-3 backdrop-blur-sm">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700/90" />
-                <div className="flex-1">
-                  <h2 className="text-[14px] font-semibold">Alex Morgan</h2>
-                  <p className="text-[11px] text-slate-400">NeuroAI • Computational Neuroscience</p>
-                </div>
-                <button className="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-slate-200 border border-slate-700">
-                  View
-                </button>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {['EEG','BCI','Neural Decoding','AI+Neuro'].map((t) => (
-                  <span
-                    key={t}
-                    className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-700 text-[10px] text-slate-300"
+                    <span>󰋜</span>
+                    <span>Feed</span>
+                  </button>
+                  <button
+                    className={`flex flex-col items-center space-y-0.5 ${
+                      isActive("learn") ? "text-cyan-300" : ""
+                    }`}
+                    onClick={() => setActiveTab("learn")}
                   >
-                    {t}
-                  </span>
-                ))}
-              </div>
-
-              <div className="space-y-2 mt-2">
-                <div className="border border-slate-800 rounded-xl p-2.5 bg-slate-900/80 text-[11px] text-slate-200">
-                  Exploring Representational Drift in Sensorimotor Cortices • 2023
-                </div>
-                <div className="border border-slate-800 rounded-xl p-2.5 bg-slate-900/80 text-[11px] text-slate-200">
-                  Open-source EEG preprocessing library for rapid prototyping.
-                </div>
-              </div>
-            </div>
-
-            {/* Learning path card */}
-            <div className="bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 space-y-2.5 backdrop-blur-md">
-              <p className="text-[11px] font-semibold text-emerald-300 uppercase tracking-wide">Learning path</p>
-              <p className="text-[14px] font-semibold text-slate-50">BCI 101 • From EEG to prototypes</p>
-              <p className="text-[11px] text-slate-300">
-                8 curated steps: key papers, talks, and starter projects to go from zero to building your first BCI demo.
-              </p>
-              <div className="flex flex-wrap gap-1.5 text-[10px]">
-                <span className="px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300">
-                  Step 1 · Foundations
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300">
-                  Step 2 · Key papers
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300">
-                  Step 3 · Hands-on
-                </span>
-              </div>
-              <button className="mt-1 px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold w-fit">
-                Start learning
-              </button>
-            </div>
-
-            {/* Events preview card */}
-            <div className="bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 space-y-2.5 backdrop-blur-md">
-              <div className="flex items-center justify-between">
-                <p className="text-[12px] font-semibold text-cyan-300 tracking-wide uppercase">Nearby Event</p>
-                <span className="text-[10px] text-slate-400">Brooklyn, NY</span>
-              </div>
-              <p className="text-[14px] font-semibold text-slate-50">NYC Neurotech Meetup</p>
-              <p className="text-[11px] text-slate-300">Jan 28, 2026 • Milk & Roses</p>
-              <p className="text-[11px] text-slate-300">
-                A gathering of researchers, founders, and engineers discussing next-gen BCIs and neurointerfaces.
-              </p>
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex -space-x-2">
-                  <div className="w-6 h-6 rounded-full bg-cyan-400/80 border border-slate-950" />
-                  <div className="w-6 h-6 rounded-full bg-violet-500/80 border border-slate-950" />
-                  <div className="w-6 h-6 rounded-full bg-emerald-400/80 border border-slate-950" />
-                </div>
-                <button className="px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold">
-                  RSVP
-                </button>
-              </div>
-            </div>
-
-            {/* Job recommendation card */}
-            <div className="bg-slate-900/85 border border-slate-700/80 rounded-2xl p-3.5 space-y-2.5 backdrop-blur-md">
-              <div className="flex items-center justify-between">
-                <p className="text-[11px] font-semibold text-amber-300 uppercase tracking-wide">Role for you</p>
-                <span className="text-[10px] text-slate-400">Based on your profile</span>
-              </div>
-              <p className="text-[14px] font-semibold text-slate-50">Neurotech Research Engineer</p>
-              <p className="text-[11px] text-slate-300">OpenBCI • Brooklyn, NY • Hybrid</p>
-              <p className="text-[11px] text-slate-300">
-                Work on next-gen EEG/BCI pipelines, real-time signal processing, and closed-loop experiments.
-              </p>
-              <div className="flex flex-wrap gap-1.5 text-[10px] mt-1">
-                {['EEG','BCI','Python','Real-time','Signal Processing'].map((t) => (
-                  <span
-                    key={t}
-                    className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300"
+                    <span>󰍉</span>
+                    <span>Learn</span>
+                  </button>
+                  <button
+                    className="flex flex-col items-center space-y-0.5"
+                    onClick={() => setActiveTab("feed")}
                   >
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center justify-between pt-2">
-                <button className="px-3 py-1.5 rounded-full bg-slate-50 text-slate-950 text-[11px] font-semibold">
-                  View job
-                </button>
-                <button className="text-[11px] text-slate-400">See 12 more roles</button>
+                    <span className="w-11 h-11 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-lg shadow-[0_14px_40px_rgba(34,211,238,0.55)]">
+                      +
+                    </span>
+                    <span>Post</span>
+                  </button>
+                  <button
+                    className={`flex flex-col items-center space-y-0.5 ${
+                      isActive("events") ? "text-cyan-300" : ""
+                    }`}
+                    onClick={() => setActiveTab("events")}
+                  >
+                    <span>󰧠</span>
+                    <span>Events</span>
+                  </button>
+                  <button
+                    className={`flex flex-col items-center space-y-0.5 ${
+                      isActive("profile") ? "text-cyan-300" : ""
+                    }`}
+                    onClick={() => setActiveTab("profile")}
+                  >
+                    <span>󰟍</span>
+                    <span>Profile</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+        );
+      }
 
-          {/* iOS-style tab bar */}
-          <div className="h-14 border-t border-slate-800 bg-slate-950/90 flex items-center justify-around text-[11px] text-slate-400">
-            <button className="flex flex-col items-center space-y-0.5 text-cyan-300">
-              <span>󰋜</span>
-              <span>Feed</span>
-            </button>
-            <button className="flex flex-col items-center space-y-0.5">
-              <span>󰍉</span>
-              <span>Explore</span>
-            </button>
-            <button className="flex flex-col items-center ">
-              <span className="w-11 h-11 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-lg shadow-[0_14px_40px_rgba(34,211,238,0.55)]">+</span>
-            </button>
-            <button className="flex flex-col items-center space-y-0.5">
-              <span>󰧠</span>
-              <span>Events</span>
-            </button>
-            <button className="flex flex-col items-center space-y-0.5">
-              <span>󰟍</span>
-              <span>Profile</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-      const root = ReactDOM.createRoot(document.getElementById('root'));
+      const root = ReactDOM.createRoot(document.getElementById("root"));
       root.render(<NeuronetPrototype />);
     </script>
   </body>
